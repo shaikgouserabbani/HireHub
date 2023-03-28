@@ -2,6 +2,7 @@ let express = require('express');
 let router = express.Router();
 
 let Job = require ('../models/job_DB.js')
+let Notifications = require('../models/noti_DB');
  
 router.get('/',(req,res) => {
     res.render('landing');
@@ -37,6 +38,12 @@ router.post('/jobs', async (req,res) => {
 
         });
             await newJob.save();
+            let newnotif = new Notifications({
+                body: 'A new job has been Posted',
+                author: newJob.name
+
+            });
+            await newNotif.save();
             res.redirect('/jobs');
     } catch (error) {
         console.log("error");
@@ -78,9 +85,13 @@ router.patch('/jobs/:id', async (req,res) => {
         cgpa: req.body.cgpa,
         deadline: req.body.deadline,
         type: req.body.type
-
-    }
+    };
     let job = await Job.findByIdAndUpdate(id,updatedJob);
+    let newNotif = new Notification({
+        body: 'A job has been updated',
+        author: updatedJob.name
+    });
+    await newNotif.save();
     res.redirect(`/jobs/${id}`);
 });
 
