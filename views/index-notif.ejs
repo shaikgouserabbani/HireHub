@@ -1,5 +1,5 @@
 <%- include('./partials/header.ejs') %>
-<a href="/notifications/new" class="btn btn-danger">add a new Notification</a>
+<a href="/notification/new" class="btn btn-danger">add a new Notification</a>
 <% for( let notif of allnotifs ) { %>
 <div>body: <%= notif.body %>, author: <%= notif.author %></div>
 <% } %>

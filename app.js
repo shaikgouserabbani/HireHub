@@ -18,7 +18,7 @@ app.use(express.static(__dirname +'/public'));
 
 let jobRoutes = require('./routes/jobs.js');
 app.use (jobRoutes);
-let notiRoutes = require('./routes/notifications');
+let notiRoutes = require('./routes/notification.js');
 app.use (notiRoutes);
 
 
