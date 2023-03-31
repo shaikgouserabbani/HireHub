@@ -3,6 +3,7 @@ const passport = require('passport');
 let router = express.Router();
 let User = require('../models/user_DB');
 
+
 router.get('/register', function(req, res) {
 	// register form
 	res.render('register');
