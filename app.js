@@ -38,17 +38,20 @@ app.set('view engine','ejs');
 app.use(express.urlencoded({extended : true}));
 app.use(methodOverride('_method'));
 app.use(express.static(__dirname +'/public'));
+app.use(function(req, res, next) {
+	res.locals.currentUser = req.user;
+	next();
+});
 
 let jobRoutes = require('./routes/jobs.js');
-app.use (jobRoutes);
 let notiRoutes = require('./routes/notification.js');
-app.use (notiRoutes);
 let authRoutes = require('./routes/auth');
+// let userRoutes = require('./routes/');
+
+app.use (jobRoutes);
+app.use (notiRoutes);
 app.use (authRoutes);
 
-app.get('/jobs',(req,res)=>{
-    res.send('landing page');
-});
 
 app.listen(3001,()=>{
     console.log('server running on port 3001');

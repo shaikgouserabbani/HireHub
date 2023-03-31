@@ -15,7 +15,13 @@ let jobSchema = new mongoose.Schema({
 	type:{
 		type: String,
         default:'fulltime'
-	}
+	},
+	appliedUsers: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'user'
+		}
+	]
 });
 
 let job = mongoose.model('job',jobSchema);

@@ -4,6 +4,8 @@ let router = express.Router();
 
 let Notifications = require('../models/noti_DB');
 
+let {isLoggedin, isAdmin} = require('../middlewares/index.js');
+
 router.get('/notifications', async function(req, res) {
     try {
         let allnotifs = await Notifications.find({});
@@ -33,7 +35,7 @@ router.post('/notifications', async function(req, res) {
     }
 });
 
-router.delete('/notifications/:id', async function(req, res) {
+router.delete('/notifications/:id', isLoggedin ,isAdmin , async function(req, res) {
     Notifications.findByIdAndDelete(req.params.id);
     res.redirect('/notifications');
 });
