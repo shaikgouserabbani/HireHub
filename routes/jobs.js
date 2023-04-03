@@ -12,17 +12,23 @@ router.get('/',(req,res) => {
 });
 
 //index
-router.get('/jobs', async (req,res) => {
-    try {
-        let foundJobs = await Job.find({});
-        console.log('req.user');
-        res.render('index',{foundJobs});
-    } catch (error) {
-        console.log("error");
-        
-    }
+router.get('/jobs', async function(req, res) {
+	try {
+		if (req.query.search && req.query.search.length > 0) {
+			// fuzzy searching
+			let regex = new RegExp(req.query.search.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
+			let foundJobs = await Job.find({ name: regex });
+			res.render('index', { foundJobs });
+		} else {
+			// extract all the jobs from db
+			let foundJobs = await Job.find({});
+			res.render('index', { foundJobs });
+		}
+	} catch (error) {
+		req.flash('error', error.message);
+		res.redirect('/jobs');
+	}
 });
-
 //new
 router.get('/jobs/new',isLoggedin, isAdmin,(req,res) => {
     res.render('new');
@@ -50,7 +56,7 @@ router.post('/jobs',isLoggedin, isAdmin , async (req,res) => {
             await newnotif.save();
             res.redirect('/jobs');
     } catch (error) {
-        console.log('error while adding a new job',"error");
+        console.log('error while adding a new job',error);
         
     }
 });
@@ -63,7 +69,7 @@ router.get('/jobs/:id', async (req,res) => {
 		res.render('show', { job });
         
     } catch (error) {
-        console.log('error while fetching a job',"error");
+        console.log('error while fetching a job',error);
     }
 });
 
@@ -75,7 +81,7 @@ router.get('/jobs/:id/:edit',isLoggedin, isAdmin, async (req,res) => {
 		res.render('edit', { job });
         
     } catch (error) {
-        console.log('error while fetching a job for edit form',"error");
+        console.log('error while fetching a job for edit form',error);
     }
 });
 //update

@@ -19,10 +19,16 @@ let jobSchema = new mongoose.Schema({
 	appliedUsers: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'user'
+			ref: 'User'
+		}
+	],
+	questions: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'question'
 		}
 	]
 });
 
-let job = mongoose.model('job',jobSchema);
-module.exports = job;
+let Job = mongoose.model('job',jobSchema);
+module.exports = Job;

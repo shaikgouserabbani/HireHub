@@ -46,11 +46,16 @@ app.use(function(req, res, next) {
 let jobRoutes = require('./routes/jobs.js');
 let notiRoutes = require('./routes/notification.js');
 let authRoutes = require('./routes/auth');
-// let userRoutes = require('./routes/');
+let userRoutes = require('./routes/user');
+let questionRoutes = require('./routes/question');
+
 
 app.use (jobRoutes);
 app.use (notiRoutes);
 app.use (authRoutes);
+app.use(userRoutes);
+app.use(questionRoutes);
+
 
 
 app.listen(3001,()=>{

@@ -36,7 +36,7 @@ router.post('/notifications', async function(req, res) {
 });
 
 router.delete('/notifications/:id', isLoggedin ,isAdmin , async function(req, res) {
-    Notifications.findByIdAndDelete(req.params.id);
+    await Notifications.findByIdAndDelete(req.params.id);
     res.redirect('/notifications');
 });
 
