@@ -98,7 +98,7 @@ router.patch('/jobs/:id', isLoggedin, isAdmin,async (req,res) => {
         type: req.body.type
     };
     let job = await Job.findByIdAndUpdate(id,updatedJob);
-    let newNotif = new Notification({
+    let newNotif = new Notifications({
         body: 'A job has been updated',
         author: updatedJob.name
     });
@@ -117,10 +117,10 @@ router.delete('/jobs/:id', isLoggedin, isAdmin,async (req,res) => {
     res.redirect('/jobs');
 });
 
-module.exports = router;
+
 
 // apply in jobs
-router.get('/jobs/:jobId/apply', isLoggedin, async function(req, res) {
+router.get('/jobs/:jobId/:apply', isLoggedin, isAdmin, async function(req, res) {
 	try {
 		if (!req.user.cgpa) {
 			return res.send('you have not entered your cgpa');
@@ -143,3 +143,4 @@ router.get('/jobs/:jobId/apply', isLoggedin, async function(req, res) {
 		console.log('error while applying in job', error);
 	}
 });
+module.exports = router;

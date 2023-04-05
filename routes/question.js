@@ -1,10 +1,10 @@
 let express = require('express');
 let router = express.Router();
 let Question = require('../models/question_DB');
-let Job = require('../models/job-DB');
-let { isLoggedIn, isAdmin } = require('../middlewares/index');
+let Job = require('../models/job_DB');
+let { isLoggedin, isAdmin } = require('../middlewares/index');
 // index (nesting)
-router.get('/jobs/:id/questions', isLoggedIn, isAdmin, async (req, res) => {
+router.get('/jobs/:id/questions', isLoggedin, isAdmin, async (req, res) => {
 	try {
 		let jobId = req.params.id;
 		let job = await Job.findById(jobId).populate('questions');
@@ -15,12 +15,12 @@ router.get('/jobs/:id/questions', isLoggedIn, isAdmin, async (req, res) => {
 	}
 });
 // new
-router.get('/jobs/:id/questions/new', isLoggedIn, isAdmin, (req, res) => {
+router.get('/jobs/:id/questions/new', isLoggedin, isAdmin, (req, res) => {
 	let jobId = req.params.id;
 	res.render('new-question', { jobId });
 });
 // create
-router.post('/jobs/:id/questions', isLoggedIn, isAdmin, async (req, res) => {
+router.post('/jobs/:id/questions', isLoggedin, isAdmin, async (req, res) => {
 	try {
 		// 1. create a question
 		// 2. save that question
@@ -37,7 +37,7 @@ router.post('/jobs/:id/questions', isLoggedIn, isAdmin, async (req, res) => {
 	}
 });
 // delete
-router.delete('/jobs/:id/questions/:questionID', isLoggedIn, isAdmin, async (req, res) => {
+router.delete('/jobs/:id/questions/:questionID', isLoggedin, isAdmin, async (req, res) => {
 	try {
 		await Question.findByIdAndDelete(req.params.questionID);
 		res.redirect(`/jobs/${req.params.id}/questions`);

@@ -1,7 +1,7 @@
 let express = require('express');
 let router = express.Router();
 let User = require('../models/user_DB');
-let { isLoggedIn, isAdmin } = require('../middlewares/index');
+let { isLoggedin, isAdmin } = require('../middlewares/index');
 // show
 router.get('/users/:id', async (req, res) => {
 	try {
@@ -12,7 +12,7 @@ router.get('/users/:id', async (req, res) => {
 	}
 });
 // edit
-router.get('/users/:id/edit', isLoggedIn, isAdmin, async (req, res) => {
+router.get('/users/:id/edit', isLoggedin, isAdmin, async (req, res) => {
 	try {
 		let user = await User.findById(req.params.id);
 		res.render('edit-user', { user });
@@ -21,7 +21,7 @@ router.get('/users/:id/edit', isLoggedIn, isAdmin, async (req, res) => {
 	}
 });
 // update
-router.patch('/users/:id', isLoggedIn, isAdmin, async (req, res) => {
+router.patch('/users/:id', isLoggedin, isAdmin, async (req, res) => {
 	try {
 		await User.findByIdAndUpdate(req.params.id, req.body.user);
 		res.redirect(`/users/${req.params.id}`);
@@ -30,7 +30,7 @@ router.patch('/users/:id', isLoggedIn, isAdmin, async (req, res) => {
 	}
 });
 // delete
-router.delete('/users/:id', isLoggedIn, isAdmin, async (req, res) => {
+router.delete('/users/:id', isLoggedin, isAdmin, async (req, res) => {
 	try {
 		await User.findByIdAndDelete(req.params.id);
 		res.redirect(`/users/${req.params.id}`);
